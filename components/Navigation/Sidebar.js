@@ -10,7 +10,7 @@ const Sidebar = ({ children }) => {
 
   return (
     <div className="h-screen w-full flex fixed">
-      <div className="sidebar h-screen w-96 flex bg-gray-900 text-white flex-col justify-between">
+      <div className="sidebar h-screen w-84 flex bg-gray-900 text-white flex-col justify-between">
         <div className="p-5 border-y border-gray-300 bg-gray-200">
           <div className="flex items-center cursor-pointer text-2xl text-black" onClick={toggleDropdown}>
             <img src={'/favicon.ico'} alt="Profile Picture" className="w-10 h-10 rounded-full mr-2" />
