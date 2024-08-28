@@ -5,7 +5,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Harmony</title>
+        <title>Health Monitor</title>
       </Head>
       <Sidebar>
         <Component {...pageProps} />

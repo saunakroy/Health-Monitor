@@ -28,11 +28,11 @@ const Sidebar = ({ children }) => {
           </div>
         </div>
         <nav className="flex-grow flex flex-col text-center text-xl">
+          <Link href="/" className="sidebar-items">
+            Diagnose
+          </Link>
           <Link href="/analytics" className="sidebar-items">
             Analytics
-          </Link>
-          <Link href="/diagnose" className="sidebar-items">
-            Diagnose
           </Link>
           <Link href="/image-analysis" className="sidebar-items">
             Image Analysis

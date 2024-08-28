@@ -23,15 +23,13 @@ const Home = () => {
       </div>
       <div className="flex p-5">
         <div className="flex-1 p-5">
-          <div className="mb-5">
-            <h3 className="text-lg mb-2">Text Input</h3>
-            <textarea
-              placeholder="Type your text here..."
-              className="w-full h-32 p-2 border border-gray-300 rounded"></textarea>
+          <div>
+            <h3 className="text-lg mb-2">Image Upload</h3>
+            <input type="file" className="w-full" />
           </div>
         </div>
         <div className="flex-1 p-5">
-          <div className="mb-5">
+          <div>
             <h3 className="text-lg mb-2">Output</h3>
             <div className="w-full h-40 border border-gray-300 rounded flex items-center justify-center bg-gray-100">
               Output will be displayed here
