@@ -5,21 +5,38 @@ import { FaSearch, FaCog, FaBell } from 'react-icons/fa'
 const Home = () => {
   const [textInput, setTextInput] = useState('') // State variable for text input
   const [output, setOutput] = useState('') // State variable for output
+  const [error, setError] = useState('')
 
   const handleTextChange = (e) => {
     setTextInput(e.target.value)
   }
 
+  
   const handleTextSubmit = async () => {
+  setError('')
+  setOutput('')
+  try {
+    console.log('Sending request to /api/diagnose')
     const response = await fetch('/api/diagnose', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ input: textInput }),
     })
 
+    console.log('Response status:', response.status)
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
     const data = await response.json()
+    console.log('Received data:', data)
     setOutput(data.output)
+  } catch (err) {
+    console.error('Error:', err)
+    setError(`Error: ${err.message}`)
   }
+}
 
   // Split the output into an array of lines
   const outputLines = output.split('\n')
@@ -59,19 +76,23 @@ const Home = () => {
           </div>
         </div>
         <div className="flex-1 p-5 h-full">
-          <div className="mb-5">
-            <h3 className="text-lg mb-2">Output</h3>
-            <div className="w-full min-h-80 h-fit border border-gray-300 rounded p-4 bg-gray-100">
-              <div className="chat-output bg-white p-4 rounded-lg shadow-md">
-                {outputLines.map((line, index) => (
+        <div className="mb-5">
+          <h3 className="text-lg mb-2">Output</h3>
+          <div className="w-full min-h-80 h-fit border border-gray-300 rounded p-4 bg-gray-100">
+            <div className="chat-output bg-white p-4 rounded-lg shadow-md">
+              {error ? (
+                <p className="text-red-500">{error}</p>
+              ) : (
+                outputLines.map((line, index) => (
                   <p key={index} className="mb-2">
                     {line}
                   </p>
-                ))}
-              </div>
+                ))
+              )}
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   )

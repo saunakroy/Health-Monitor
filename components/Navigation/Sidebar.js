@@ -14,7 +14,7 @@ const Sidebar = ({ children }) => {
         <div className="p-5 border-y border-gray-300 bg-gray-200">
           <div className="flex items-center cursor-pointer text-2xl text-black" onClick={toggleDropdown}>
             <img src={'/favicon.ico'} alt="Profile Picture" className="w-10 h-10 rounded-full mr-2" />
-            <span>James Paul Turner</span>
+            <span>James Timmy Turner</span>
             <div
               className={`absolute top-16 left-5 bg-white border border-gray-300 shadow-lg ${
                 dropdownOpen ? 'flex' : 'hidden'
