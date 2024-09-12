@@ -9,12 +9,18 @@ const Sidebar = ({ children }) => {
   }
 
   return (
-    <div className="h-screen w-full flex fixed">
-      <div className="sidebar h-screen w-84 flex bg-gray-900 text-white flex-col justify-between">
+    <div className="h-screen w-full flex fixed z-10">
+      <div className="sidebar h-screen w-96 flex bg-gray-900 text-white flex-col justify-between z-20">
         <div className="p-5 border-y border-gray-300 bg-gray-200">
-          <div className="flex items-center cursor-pointer text-2xl text-black" onClick={toggleDropdown}>
-            <img src={'/favicon.ico'} alt="Profile Picture" className="w-10 h-10 rounded-full mr-2" />
-            <span>James Timmy Turner</span>
+          <div
+            className="flex items-center cursor-pointer text-2xl text-black"
+            onClick={toggleDropdown}>
+            <img
+              src={'/favicon.ico'}
+              alt="Profile Picture"
+              className="w-10 h-10 rounded-full mr-2"
+            />
+            <span>James Paul Turner</span>
             <div
               className={`absolute top-16 left-5 bg-white border border-gray-300 shadow-lg ${
                 dropdownOpen ? 'flex' : 'hidden'
@@ -45,7 +51,7 @@ const Sidebar = ({ children }) => {
           <button className="w-full py-2 bg-red-600 text-white hover:bg-red-700">Logout</button>
         </div>
       </div>
-      <div className="flex-1">{children}</div>
+      <div className="top-0 left-0 w-full h-full">{children}</div>
     </div>
   )
 }

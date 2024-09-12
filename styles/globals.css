@@ -6,4 +6,39 @@
   .sidebar-items {
     @apply p-7 border-b border-gray-700 hover:bg-gray-200;
   }
+  .submit-btn {
+    @apply w-full p-2 mt-2 bg-blue-500 text-white rounded;
+  }
+  .submit-btn:hover {
+    @apply cursor-pointer bg-blue-700;
+  }
+
+  /* Add this CSS to your global stylesheet or in a CSS module */
+
+.loading-animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 1.5rem;
+  color: #000;
+}
+
+.loading-animation::before {
+  content: '';
+  display: block;
+  width: 1em;
+  height: 1em;
+  border: 0.2em solid rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  border-top: 0.2em solid #000;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 }
