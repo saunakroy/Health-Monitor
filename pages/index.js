@@ -87,7 +87,7 @@ const Home = () => {
             <TypeAnimation
               className='whitespace-pre-line mb-1'
               sequence={[output]}
-              speed={110}
+              speed={125}
               wrapper="p"
               cursor={false}
             />
