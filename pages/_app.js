@@ -13,11 +13,8 @@ export default function App({ Component, pageProps }) {
         <Sidebar>
           <div className="">
             {' '}
-            {/* Adjust padding to match sidebar width */}
             <SearchBar />
-            {/* <main className="flex-1 overflow-y-auto p-4"> */}
-              <Component {...pageProps} />
-            {/* </main> */}
+            <Component {...pageProps} />
           </div>
         </Sidebar>
       </div>

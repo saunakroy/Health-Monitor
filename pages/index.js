@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TypeAnimation } from 'react-type-animation'
+import { MdKeyboardReturn, MdKeyboardCommandKey, MdKeyboardControlKey } from 'react-icons/md'
 
 const Home = () => {
   const [textInput, setTextInput] = useState('')
@@ -41,6 +42,17 @@ const Home = () => {
     }
   }
 
+  // Calculate the speed based on the length of the output
+  const calculateSpeed = (text) => {
+    const length = text.length
+    if (length > 1000) return 99
+    if (length > 200) return 90
+    return 80
+  }
+
+  // Calculate the speed based on the current output
+  const typingSpeed = calculateSpeed(output)
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
@@ -58,11 +70,27 @@ const Home = () => {
     <div className="flex h-screen">
       <div className="w-1/2 bg-gray-200 flex flex-col p-5">
         <h2 className="text-2xl font-bold mb-4">Input</h2>
-        <p className="mb-4 text-gray-600">
+        <p className="description mb-4 text-gray-600">
           Describe your symptoms, conditions, or any health concerns you have and press the submit
-          button when you’re finished. You can also press CMD + ENTER (Mac) or CTRL + ENTER
+          button when you're finished. You can also press{' '}
+          <kbd>
+            <MdKeyboardCommandKey />
+          </kbd>{' '}
+          +{' '}
+          <kbd>
+            <MdKeyboardReturn />
+          </kbd>{' '}
+          (Mac) or{' '}
+          <kbd>
+            <MdKeyboardControlKey />
+          </kbd>{' '}
+          +{' '}
+          <kbd>
+            <MdKeyboardReturn />
+          </kbd>{' '}
           (Windows) to submit.
         </p>
+
         <textarea
           placeholder="Type your text here..."
           value={textInput}
@@ -83,11 +111,11 @@ const Home = () => {
             <span className="dot"></span>
           </div>
         ) : output ? (
-          <div className="chat-output bg-white p-4 rounded-lg shadow-md">
+          <div className="chat-output bg-white p-4 rounded-lg shadow-md overflow-auto">
             <TypeAnimation
-              className='whitespace-pre-line mb-1'
+              className="whitespace-pre-line mb-1"
               sequence={[output]}
-              speed={90}
+              speed={typingSpeed}
               wrapper="p"
               cursor={false}
             />
