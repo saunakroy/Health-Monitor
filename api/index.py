@@ -8,11 +8,12 @@ app = Flask(__name__)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def diagnose(input_text):
+    new_prompt = input_text + "Describe what condition I may have, and recommend treatments/medicines, and provide links to helpful articles regarding the subject."
     try:
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=[
-                {"role": "user", "content": input_text}
+                {"role": "user", "content": new_prompt}
             ]
         )
         return completion.choices[0].message.content.strip()
