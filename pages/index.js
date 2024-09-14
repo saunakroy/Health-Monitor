@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { TypeAnimation } from 'react-type-animation'
 import { MdKeyboardReturn, MdKeyboardCommandKey, MdKeyboardControlKey } from 'react-icons/md'
 import { FaWindows, FaApple } from 'react-icons/fa'
@@ -9,6 +9,9 @@ const Home = () => {
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  // Ref to keep track of the output container for scrolling
+  const outputRef = useRef(null)
 
   // Updates textInput state when user types in the input
   const handleTextChange = (e) => {
@@ -69,9 +72,21 @@ const Home = () => {
     }
   }, [textInput])
 
+  // Scroll to bottom during typing animation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (outputRef.current) {
+        // Scroll to the bottom as the output grows
+        outputRef.current.scrollTop = outputRef.current.scrollHeight
+      }
+    }, 100) // Scroll check every 100ms
+
+    return () => clearInterval(interval)
+  }, [output])
+
   return (
     <div className="flex h-screen">
-      {/* Input container, left half of the scren */}
+      {/* Input container, left half of the screen */}
       <div className="w-1/2 bg-gray-200 flex flex-col p-5">
         <h2 className="text-2xl font-bold mb-4">Input</h2>
 
@@ -131,7 +146,9 @@ const Home = () => {
         ) : error ? (
           <p className="text-red-500">{error}</p>
         ) : output ? (
-          <div className="chat-output bg-white p-4 rounded-lg shadow-md overflow-auto">
+          <div
+            className="chat-output bg-white p-4 rounded-lg shadow-md overflow-auto max-h-[80vh]"
+            ref={outputRef}>
             {/* TypeAnimation react component adds the typing animation when the output arrives */}
             <TypeAnimation
               className="whitespace-pre-line mb-1"
