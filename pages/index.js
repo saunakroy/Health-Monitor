@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { TypeAnimation } from 'react-type-animation'
 import { MdKeyboardReturn, MdKeyboardCommandKey, MdKeyboardControlKey } from 'react-icons/md'
+import { FaWindows, FaApple } from 'react-icons/fa'
 
 const Home = () => {
   const [textInput, setTextInput] = useState('')
@@ -80,7 +81,11 @@ const Home = () => {
           <kbd>
             <MdKeyboardReturn />
           </kbd>{' '}
-          (Mac) or{' '}
+          (
+          <span className="comp-os-icon">
+            <FaApple />
+          </span>
+          ) or{' '}
           <kbd>
             <MdKeyboardControlKey />
           </kbd>{' '}
@@ -88,7 +93,11 @@ const Home = () => {
           <kbd>
             <MdKeyboardReturn />
           </kbd>{' '}
-          (Windows) to submit.
+          (
+          <span className="comp-os-icon">
+            <FaWindows />
+          </span>){' '}
+          to submit.
         </p>
 
         <textarea
@@ -105,7 +114,7 @@ const Home = () => {
       <div className="w-1/2 bg-gray-100 p-5">
         <h2 className="text-2xl font-bold mb-4">Result</h2>
         {loading ? (
-          <div className="typing-indicator relative">
+          <div className="typing-indicator flex items-center justify-center h-full">
             <span className="dot"></span>
             <span className="dot"></span>
             <span className="dot"></span>
