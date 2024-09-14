@@ -20,12 +20,14 @@ const Sidebar = ({ children }) => {
               alt="Profile Picture"
               className="w-10 h-10 rounded-full mr-2"
             />
+            {/* User info pane later */}
             <span>James Paul Turner</span>
             <div
               className={`absolute top-16 left-5 bg-white border border-gray-300 shadow-lg ${
                 dropdownOpen ? 'flex' : 'hidden'
               } flex-col`}>
               <div className="p-2">
+                {/* Dropdown items */}
                 <p>Profile</p>
                 <p>Settings</p>
                 <p>Help</p>
@@ -33,6 +35,8 @@ const Sidebar = ({ children }) => {
             </div>
           </div>
         </div>
+
+        {/* Sidebar items */}
         <nav className="flex-grow flex flex-col text-center text-xl">
           <Link href="/" className="sidebar-items">
             Diagnose
