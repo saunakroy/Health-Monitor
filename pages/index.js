@@ -9,6 +9,7 @@ const Home = () => {
   const [output, setOutput] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [scrolling, setScrolling] = useState(false)
 
   // Ref to keep track of the output container for scrolling
   const outputRef = useRef(null)
@@ -39,6 +40,7 @@ const Home = () => {
       // Extracts json out of the returned data and sets that as the output
       const data = await response.json()
       setOutput(data.output)
+      setScrolling(true)
     } catch (err) {
       console.error('Error:', err)
       setError(`Error: ${err.message}`)
@@ -75,14 +77,14 @@ const Home = () => {
   // Scroll to bottom during typing animation
   useEffect(() => {
     const interval = setInterval(() => {
-      if (outputRef.current) {
+      if (outputRef.current && scrolling) {
         // Scroll to the bottom as the output grows
         outputRef.current.scrollTop = outputRef.current.scrollHeight
       }
     }, 100) // Scroll check every 100ms
 
     return () => clearInterval(interval)
-  }, [output])
+  }, [output, scrolling])
 
   return (
     <div className="flex h-screen">
@@ -152,7 +154,12 @@ const Home = () => {
             {/* TypeAnimation react component adds the typing animation when the output arrives */}
             <TypeAnimation
               className="whitespace-pre-line mb-1"
-              sequence={[output]}
+              sequence={[
+                output,
+                () => {
+                  setScrolling(false)
+                },
+              ]}
               speed={typingSpeed}
               wrapper="p"
               cursor={false}
