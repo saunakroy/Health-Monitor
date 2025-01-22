@@ -21,7 +21,7 @@ const Sidebar = ({ children }) => {
               className="w-10 h-10 rounded-full mr-2"
             />
             {/* User info pane later */}
-            <span>James Paul Turner</span>
+            <span>Guest Account</span>
             <div
               className={`absolute top-16 left-5 bg-white border border-gray-300 shadow-lg ${
                 dropdownOpen ? 'flex' : 'hidden'
