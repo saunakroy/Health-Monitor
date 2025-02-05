@@ -2,14 +2,17 @@ import React, { useState, useEffect, useRef } from 'react'
 import { TypeAnimation } from 'react-type-animation'
 import { MdKeyboardReturn, MdKeyboardCommandKey, MdKeyboardControlKey } from 'react-icons/md'
 import { FaWindows, FaApple } from 'react-icons/fa'
+import { marked } from 'marked'
 
 const Home = () => {
   // React states that handle changing data on the page
   const [textInput, setTextInput] = useState('')
   const [output, setOutput] = useState('')
+  const [animatedOutput, setAnimatedOutput] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [scrolling, setScrolling] = useState(false)
+  const [autoScrolling, setAutoScrolling] = useState(false)
+  const [isTyping, setIsTyping] = useState(true)
 
   // Ref to keep track of the output container for scrolling
   const outputRef = useRef(null)
@@ -24,6 +27,8 @@ const Home = () => {
     setError('')
     setOutput('')
     setLoading(true)
+    setIsTyping(true)
+    setAutoScrolling(true)
 
     try {
       // Sends request to api endpoint with textInput as the body
@@ -40,13 +45,23 @@ const Home = () => {
       // Extracts json out of the returned data and sets that as the output
       const data = await response.json()
       setOutput(data.output)
-      setScrolling(true)
+      setAnimatedOutput(data.output)
+      setAutoScrolling(true)
     } catch (err) {
       console.error('Error:', err)
       setError(`Error: ${err.message}`)
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleTypingComplete = () => {
+    setIsTyping(false)
+    setAutoScrolling(false)
+  }
+
+  const getMarkdownHTML = (markdown) => {
+    return { __html: marked(markdown) }
   }
 
   // Calculate the speed based on the length of the output
@@ -77,14 +92,38 @@ const Home = () => {
   // Scroll to bottom during typing animation
   useEffect(() => {
     const interval = setInterval(() => {
-      if (outputRef.current && scrolling) {
+      if (outputRef.current && autoScrolling) {
         // Scroll to the bottom as the output grows
         outputRef.current.scrollTop = outputRef.current.scrollHeight
       }
     }, 100) // Scroll check every 100ms
 
     return () => clearInterval(interval)
-  }, [output, scrolling])
+  }, [output, autoScrolling])
+
+  // Detect when user scrolls in the output area and disable auto-scrolling
+  useEffect(() => {
+    const handleScroll = () => {
+      if (autoScrolling && outputRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = outputRef.current
+        // Check if user manually scrolls (not at the bottom)
+        if (scrollTop + clientHeight < scrollHeight) {
+          setAutoScrolling(false)
+        }
+      }
+    }
+
+    if (outputRef.current) {
+      outputRef.current.addEventListener('scroll', handleScroll)
+    }
+
+    // Clean up the event listener
+    return () => {
+      if (outputRef.current) {
+        outputRef.current.removeEventListener('scroll', handleScroll)
+      }
+    }
+  }, [autoScrolling])
 
   return (
     <div className="flex h-screen">
@@ -151,19 +190,18 @@ const Home = () => {
           <div
             className="chat-output bg-white p-4 rounded-lg shadow-md overflow-auto max-h-[80vh]"
             ref={outputRef}>
-            {/* TypeAnimation react component adds the typing animation when the output arrives */}
-            <TypeAnimation
-              className="whitespace-pre-line mb-1"
-              sequence={[
-                output,
-                () => {
-                  setScrolling(false)
-                },
-              ]}
-              speed={typingSpeed}
-              wrapper="p"
-              cursor={false}
-            />
+            {isTyping ? (
+              //  TypeAnimation react component adds the typing animation when the output arrives
+              <TypeAnimation
+                sequence={[animatedOutput, handleTypingComplete]}
+                speed={typingSpeed}
+                wrapper="div"
+                className="whitespace-pre-line mb-1"
+                cursor={false}
+              />
+            ) : (
+              <div dangerouslySetInnerHTML={getMarkdownHTML(output)} style={{ lineHeight: '2' }} />
+            )}
           </div>
         ) : null}
       </div>
