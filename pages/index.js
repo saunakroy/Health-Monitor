@@ -31,21 +31,30 @@ const Home = () => {
     setAutoScrolling(true)
 
     try {
-      // Sends request to api endpoint with textInput as the body
-      const response = await fetch('/api/diagnose', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ input: textInput }),
+        body: JSON.stringify({
+          messages: [
+            { 
+              role: "system", 
+              content: "You are a helpful medical assistant. Provide clear, informative responses about health concerns, but remind users to consult healthcare professionals for proper medical advice." 
+            },
+            { 
+              role: "user", 
+              content: textInput 
+            }
+          ]
+        }),
       })
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      // Extracts json out of the returned data and sets that as the output
       const data = await response.json()
-      setOutput(data.output)
-      setAnimatedOutput(data.output)
+      setOutput(data.reply)
+      setAnimatedOutput(data.reply)
       setAutoScrolling(true)
     } catch (err) {
       console.error('Error:', err)
